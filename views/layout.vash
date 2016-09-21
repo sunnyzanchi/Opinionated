@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#EC407A">
+  <title>Opinionated</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Roboto+Mono" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Damion&text=Opinionated" rel="stylesheet">
+  <script src="js/knockout.min.js"></script>
+  <script src="js/knockout.mapping.min.js"></script>
+</head>
+<body>
+  @html.block('content')
+<!-- Create new room dialog box -->
+  <script type="text/html" id="create-room">
+    <!-- ko with: modals.createRoom -->
+      <h2>Create New Room</h2>
+      <div class="modal-content">
+        <label for="create">Room Name</label>
+        <input type="text" 
+               id="create"
+               data-bind="hasFocus: focus,
+                                      value: roomName,
+                                      event: {keyup: function(m,e){
+                                          if(e.key === 'Enter')create()();
+                                        }
+                                      }">
+      </div>
+      <div class="button-inliner">
+        <button data-bind="click: cancel">Cancel</button>
+        <button data-bind="click: create()">Create</button>
+      </div>  
+    <!-- /ko -->
+  </script>
+  
+<!-- Join room dialog box -->
+  <script type="text/html" id="join-room">
+    <h2>Join Room</h2>
+    <!-- ko if: rooms().length > 0 -->
+      <ul data-bind="foreach: rooms">
+        <li data-bind="text: name,
+                       click: $parent.modals.joinRoom.join()"></li>
+      </ul>
+    <!-- /ko -->
+    <!-- ko if: rooms().length === 0 -->
+    <p>There are no rooms to join<br>
+      Why not <a href="" data-bind="click: modals.joinRoom.goToCreate">make a new one?</a>
+    </p>
+    <!-- /ko-->
+    <button data-bind="click: modals.joinRoom.cancel">Cancel</button>
+  </script>
+  
+  <!-- Settings modal template -->
+  <script type="text/html" id="settings">
+    <!-- ko with: ui.nav.settings -->
+      <h2>Settings</h2>
+      <div class="modal-content">
+        <label for="new-name">Change Name</label>
+        <input type="text" 
+               id="new-name"
+               data-bind="value: newName">
+      </div>
+      <div class="button-inliner">
+        <button data-bind="click: $root.ui.toggleModal">Cancel</button>
+        <button data-bind="click: updateName()">Change Name</button>
+      </div>
+    <!-- /ko -->
+  </script>
+  
+<!-- Intro page template -->
+  <script type="text/html" id="intro">
+    <!-- ko with: pages.intro -->
+      <div class="intro">
+        <h1 class="title">Opinionated</h1>
+        <div class="intro-buttons">
+          <button class="outline"
+                  data-bind="click: join()">Join Room</button>
+          <button class="outline"
+                  data-bind="click: create()">New Room</button>
+        </div>
+      </div>
+    <!-- /ko -->
+  </script>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
