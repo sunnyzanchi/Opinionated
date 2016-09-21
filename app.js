@@ -80,4 +80,4 @@ app.ws('/', function(ws, req) {
 });
 
 /* Start server */
-app.listen(3000);
+app.listen(process.env.PORT || 80);
