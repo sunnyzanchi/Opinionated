@@ -25,7 +25,7 @@ app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 /* Routes */
 //Index
 app.get('/', function(req, res, next){
-  res.render("index");
+  res.render('index');
 });
 
 //WebSocket
@@ -54,7 +54,7 @@ app.ws('/', function(ws, req) {
     for(let i of model.rooms){
       let newPlayers = [];
       let response = {
-        name: "playerQuit",
+        name: 'playerQuit',
         data: {}
       }
       //Find which player is quitting

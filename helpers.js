@@ -3,7 +3,7 @@ const helpers = {
   /* Send complete list of players */
   allPlayersUpdate(ws, players){
     var response = {
-          name: "allPlayersUpdate",
+          name: 'allPlayersUpdate',
           data: {
             players: []
           }
@@ -24,7 +24,7 @@ const helpers = {
   /* Send player status update */
   playerStatusUpdate(ws, status, playerId){
     var response = {
-      name: "playerStatusUpdate",
+      name: 'playerStatusUpdate',
       data: {
         status: status,
         id: playerId
@@ -38,7 +38,7 @@ const helpers = {
       Valid status values are ready, inProgress, over */
   roundUpdate(ws, status){
     var response = {
-      name: "roundUpdate",
+      name: 'roundUpdate',
       data: {
         status: status
       }
@@ -50,7 +50,7 @@ const helpers = {
   /* Send all player scores */
   sendAllScores(ws, m, roomId){
     var response = {
-      name: "allScores",
+      name: 'allScores',
       data: {
         scores: []
       }
@@ -74,14 +74,14 @@ const helpers = {
   /* Let the client know they joined the room successfully */
   updateRoom(ws, data){
     var response = {
-      name: "updateRoom",
+      name: 'updateRoom',
       data: {
         room: {
           id: data.id,
           name: data.name,
           status: data.status
         },
-        status: "success",
+        status: 'success',
       }
     };
     response = JSON.stringify(response);

@@ -6,7 +6,7 @@ function createRoom(id, name){
     id: id,
     name: name,
     players: [],
-    _status: "ready",
+    _status: 'ready',
     get status(){return this._status},
     //We use a getter and setter with a private _status property
     //We never modify _status directly, but when we set status,

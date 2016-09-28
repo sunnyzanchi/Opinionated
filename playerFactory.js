@@ -9,7 +9,7 @@ function createPlayer(id, name, room, ws){
     set name(a){
       this._name = a;
       var response = {
-        name: "nameUpdate",
+        name: 'nameUpdate',
         data: {
           id: this.id,
           name: a
