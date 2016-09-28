@@ -20,9 +20,6 @@ app.set('view engine', 'vash');
 /* Public */
 app.use(express.static(path.join(__dirname, 'public')));
 
-/* Vars */
-var roundStatus = "ready";
-
 /* Routes */
 //Index
 app.get('/', function(req, res, next){
@@ -41,7 +38,6 @@ app.ws('/', function(ws, req) {
       wsMsg.errorInvalidJSON(ws);
       return;
     }
-    
     //Make sure it's a valid message
     if(typeof wsMsg[msg.name] === 'function'){
       wsMsg[msg.name](ws, msg, model); //All functions from wsMsg take args in the same order
