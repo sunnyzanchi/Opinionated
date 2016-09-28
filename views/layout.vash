@@ -6,6 +6,7 @@
   <meta name="theme-color" content="#EC407A">
   <title>Opinionated</title>
   <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="favicon.ico">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Damion&text=Opinionated" rel="stylesheet">
