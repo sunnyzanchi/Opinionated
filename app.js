@@ -32,7 +32,6 @@ app.get('/', function(req, res, next){
 
 app.ws('/', function(ws, req) {
   ws.on('message', function(msg) {
-    ;;console.log(msg);
     try{
       msg = JSON.parse(msg);
     }
