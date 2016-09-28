@@ -7,7 +7,7 @@
   <title>Opinionated</title>
   <link rel="stylesheet" href="css/style.css">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Roboto+Mono" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Damion&text=Opinionated" rel="stylesheet">
   <script src="js/knockout.min.js"></script>
   <script src="js/knockout.mapping.min.js"></script>
