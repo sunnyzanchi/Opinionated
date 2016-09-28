@@ -33,7 +33,7 @@ html,body{
   height: 100%;
 }
 input{
-  font-family: 'Roboto', Helvetica, Arial, sans-serif;
+  font-family: "Roboto", Helvetica, Arial, sans-serif;
 }
 
 h1,h2,h3,h4,h5,h6{
@@ -350,7 +350,7 @@ tr:only-of-type{
 }
 
 .title{
-  font-family: 'Damion', sans-serif;
+  font-family: "Damion", sans-serif;
   font-size: 48px;
   -webkit-user-select: none;
   -moz-user-select: none;   
