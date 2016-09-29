@@ -16,5 +16,19 @@
     "serve-favicon": "~2.3.0",
     "vash": "^0.12.1",
     "ws": "^1.1.1"
+  },
+  "devDependencies": {
+    "babel-preset-babili": "0.0.3",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^6.1.2",
+    "gulp-clean-css": "^2.0.13",
+    "gulp-concat": "^2.6.0",
+    "gulp-inject": "^4.1.0",
+    "gulp-nodemon": "^2.2.1",
+    "gulp-order": "^1.1.1",
+    "gulp-rename": "^1.2.2",
+    "gulp-replace": "^0.5.4",
+    "gulp-zip": "^3.2.0",
+    "pump": "^1.0.1"
   }
 }
