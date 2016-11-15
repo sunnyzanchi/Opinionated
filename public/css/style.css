@@ -20,6 +20,16 @@
     top: -9999px;
   }
 }
+
+.dialog-fade-enter-active, .dialog-fade-leave-active {
+  transition: opacity .1s;
+}
+.dialog-fade-enter, .dialog-fade-leave-active {
+  opacity: 0;
+}
+.page-slide-enter-active{
+  animation: slide-out .3s;
+}
 html{
   font-size: 62.5%;
 }
@@ -70,15 +80,16 @@ button:hover{
 button:disabled{
   color: #9E9E9E;
 }
-button.outline{
+button.outline-button{
   border: 3px solid #fff;
   color: #fff;
   background: transparent;
   padding: 12px;
   transition: .3s;
 }
-button.outline:hover{
+button.outline-button:hover{
   background: #fff;
+  color: #EC407A;
 }
 
 .container{
@@ -173,7 +184,7 @@ button.new-round{
 
 .button-inliner{
   display: flex;
-  justify-content: space-around; 
+  justify-content: space-around;
 }
 
 table{
@@ -202,7 +213,7 @@ tr:not(:first-of-type){
   border-top: 1px solid #EEE;
 }
 tr:only-of-type{
-  border-bottom: 1px solid #EEE;  
+  border-bottom: 1px solid #EEE;
 }
 @media(min-width: 475px){
   table{
@@ -232,16 +243,18 @@ tr:only-of-type{
 }
 
 .modal-container{
+  background: rgba(0,0,0,.3);
   display: flex;
   height: 100%;
   left: 0;
   position: absolute;
   top: 0;
   width: 100%;
+  z-index: 5;
 }
 .modal{
   background: #fff;
-  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 
+  box-shadow: 0 14px 28px rgba(0,0,0,0.25),
               0 10px 10px rgba(0,0,0,0.22);
   display: flex;
   flex-direction: column;
@@ -306,6 +319,10 @@ tr:only-of-type{
   z-index: 5;
 }
 
+#app{
+  height: 100%;
+  width: 100%;
+}
 .page{
   background: #fff;
   height: 100%;
@@ -353,9 +370,9 @@ tr:only-of-type{
   font-family: "Damion", sans-serif;
   font-size: 48px;
   -webkit-user-select: none;
-  -moz-user-select: none;   
-  -ms-user-select: none;    
-  user-select: none;        
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 .title:hover{
   cursor: default;
