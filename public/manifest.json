@@ -1,0 +1,38 @@
+{
+  "name": "Opinionated",
+  "short_name": "Opinionated",
+  "background_color": "#EC407A",
+  "description": "Sprint planning poker app",
+  "dir": "ltr",
+  "display": "standalone",
+  "icons": [
+    {
+      "sizes": "256x256",
+      "src": "/icons/icon_256.png"
+    },
+    {
+      "sizes": "128x128",
+      "src": "/icons/icon_128.png"
+    },
+    {
+      "sizes": "72x72",
+      "src": "/icons/icon_72.png"
+    },
+    {
+      "sizes": "64x64",
+      "src": "/icons/icon_64.png"
+    },
+    {
+      "sizes": "48x48",
+      "src": "/icons/icon_48.png"
+    },
+    {
+      "sizes": "32x32",
+      "src": "/icons/icon_32.png"
+    }
+  ],
+  "lang": "en-US",
+  "orientation": "portrait-primary",
+  "start_url": ".",
+  "theme_color": "#EC407A"
+}

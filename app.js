@@ -6,9 +6,9 @@ const app = express();
 const WebSocketServer = require('ws').Server;
 const expressWs = require('express-ws')(app);
 
-/*  Handles incoming Websocket messages 
+/*  Handles incoming Websocket messages
     Methods prefixed with an underscore are private */
-const wsMsg = require('./wsMsg'); 
+const wsMsg = require('./wsMsg');
 
 /* Model */
 var model = {
@@ -17,7 +17,7 @@ var model = {
 
 /* View Engine */
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'vash');
+app.set('view engine', 'hbs');
 /* Public */
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -25,7 +25,10 @@ app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 /* Routes */
 //Index
 app.get('/', function(req, res, next){
-  res.render('index');
+  const options = {
+    root: './views'
+  }
+  res.sendFile('main.html', options);
 });
 
 //WebSocket
@@ -46,7 +49,7 @@ app.ws('/', function(ws, req) {
     else{
       wsMsg.errorInvalidName(ws, msg);
     }
-    
+
   });
   ws.on('close', function(){
     //Find which room the client is in
@@ -59,7 +62,7 @@ app.ws('/', function(ws, req) {
       //Find which player is quitting
       for(let j of i.players){
         if(j.ws !== ws){
-          newPlayers.push(j); 
+          newPlayers.push(j);
         }
         else{
           //Save id to send to the other clients so they can remove the quitter
@@ -77,4 +80,4 @@ app.ws('/', function(ws, req) {
 });
 
 /* Start server */
-app.listen(process.env.PORT || 80);
+app.listen(process.env.PORT || 3000);
