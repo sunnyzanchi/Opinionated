@@ -41,6 +41,7 @@
       </div>
       <div class="numbers-container">
         <p class="hint"
+           :class="{'lock-hint': firstClicked}"
            @webkitAnimationEnd=""
            @animationend=""
            @oAnimationEnd="">Tap your choice again to lock it in!
@@ -190,6 +191,8 @@ module.exports = {
     return {
       // The scores available for the user to select
       availableScores: [1, 2, 3, 5, 8, 13, 20, 40, 100],
+      // To show the lock hint the first time a player clicks a button
+      firstClicked: false,
       // List of all the players in the room
       players: [],
       // The user's currently selected score and its status (primed or locked)
@@ -213,6 +216,7 @@ module.exports = {
 
     /* This sets the selectedScore and status accordingly when a player chooses a score */
     selectScoreReceiver(score){
+      if(!this.firstClicked)this.firstClicked = true;
       if(this.selectedScore.score === score){
         if(this.selectedScore.status === 'primed') this.selectedScore.status = 'submitted';
         else if(this.selectedScore.status !== 'submitted') this.selectedScore.status = 'primed';

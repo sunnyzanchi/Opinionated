@@ -149,7 +149,7 @@ nav button:hover{
 }
 @media(min-width: 850px){
   .numbers-container{
-    max-width: 100%;
+    max-width: 756px;
     margin-bottom: 30px;
   }
 }
@@ -353,17 +353,17 @@ tr:only-of-type{
 .intro button.outline:hover{
   color: #EC407A;
 }
-.lock-hint{
-  display: block;
-  width: 100%;
-  text-align: center;
-  animation: hint 2s cubic-bezier(0, 0.65, 0.35, 1);
-}
 .hint{
   display: none;
   color: transparent;
   text-align: center;
   width: 100%;
+}
+.lock-hint{
+  display: block;
+  width: 100%;
+  text-align: center;
+  animation: hint 2s cubic-bezier(0, 0.65, 0.35, 1);
 }
 
 .title{
