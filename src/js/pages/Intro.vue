@@ -20,11 +20,7 @@ module.exports = {
   data(){
     return {}
   },
-  methods: {
-    log(){
-      ;;console.log(this.ws);
-    }
-  },
+  methods: {},
   mixins: [change],
   mounted(){},
   props: ['ws']
