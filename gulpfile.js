@@ -24,6 +24,7 @@ gulp.task('webpack', function(cb){
 
 gulp.task('default', ['webpack'], function(cb){
   return nodemon({
+    delay: 10,
     ignore: ['public/**/*.*'],
     scripts: {
       start: 'node app.js'
