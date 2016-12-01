@@ -20,7 +20,7 @@ const wsMsg = {
       id: createRoomId,
       name: msg.data.room.name,
       status: 'ready'
-    }
+    };
     //We let the client know the room was created and they joined it
     helpers.updateRoom(ws, createRoomResponse);
     //Client needs the list of all the players in the room, which is just them
@@ -34,7 +34,7 @@ const wsMsg = {
       data: {
         error: 'Invalid message received. Message should be serialized in JSON format'
       }
-    }
+    };
     response = JSON.stringify(response);
     ws.send(response);
   },
@@ -46,7 +46,7 @@ const wsMsg = {
       data: {
         error: `Invalid message name '${msg.name}'`
       }
-    }
+    };
     response = JSON.stringify(response);
     ws.send(response);
   },
@@ -185,6 +185,6 @@ const wsMsg = {
       }
     }
   },
-}
+};
 
 module.exports = wsMsg;

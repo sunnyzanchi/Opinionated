@@ -27,7 +27,7 @@ app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.get('/', function(req, res, next){
   const options = {
     root: './views'
-  }
+  };
   res.sendFile('main.html', options);
 });
 
@@ -58,7 +58,7 @@ app.ws('/', function(ws, req) {
       let response = {
         name: 'playerQuit',
         data: {}
-      }
+      };
       //Find which player is quitting
       for(let j of i.players){
         if(j.ws !== ws){
@@ -71,7 +71,7 @@ app.ws('/', function(ws, req) {
       }
       i.players = newPlayers;
       //Send to the rest of the clients
-      response = JSON.stringify(response)
+      response = JSON.stringify(response);
       for(let j of i.players){
         j.ws.send(response);
       }

@@ -7,7 +7,7 @@ function createRoom(id, name){
     name: name,
     players: [],
     _status: 'ready',
-    get status(){return this._status},
+    get status(){return this._status;},
     //We use a getter and setter with a private _status property
     //We never modify _status directly, but when we set status,
     // it sends the status update to all the players in the room
@@ -18,7 +18,7 @@ function createRoom(id, name){
       }
     }
   };
-  
+
 }
 
 module.exports = createRoom;

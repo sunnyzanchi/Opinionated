@@ -20,7 +20,7 @@ const helpers = {
     response = JSON.stringify(response);
     ws.send(response);
   },
-  
+
   /* Send player status update */
   playerStatusUpdate(ws, status, playerId){
     var response = {
@@ -29,12 +29,12 @@ const helpers = {
         status: status,
         id: playerId
       }
-    }
+    };
     response = JSON.stringify(response);
-    ws.send(response);    
+    ws.send(response);
   },
-  
-  /*  Update round status 
+
+  /*  Update round status
       Valid status values are ready, inProgress, over */
   roundUpdate(ws, status){
     var response = {
@@ -42,11 +42,11 @@ const helpers = {
       data: {
         status: status
       }
-    }
+    };
     response = JSON.stringify(response);
     ws.send(response);
   },
-  
+
   /* Send all player scores */
   sendAllScores(ws, m, roomId){
     var response = {
@@ -54,7 +54,7 @@ const helpers = {
       data: {
         scores: []
       }
-    }
+    };
     //Find which room it is
     for(let i of m.rooms){
       if(i.id === roomId){
@@ -70,7 +70,7 @@ const helpers = {
     response = JSON.stringify(response);
     ws.send(response);
   },
-  
+
   /* Let the client know they joined the room successfully */
   updateRoom(ws, data){
     var response = {
@@ -87,6 +87,6 @@ const helpers = {
     response = JSON.stringify(response);
     ws.send(response);
   }
-}
+};
 
 module.exports = helpers;
