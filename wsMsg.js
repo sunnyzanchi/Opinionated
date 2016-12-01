@@ -5,18 +5,7 @@ const createPlayer = require('./playerFactory');
 const helpers = require('./helpers');
 
 const wsMsg = {
-  
-  /* When a client wants to change their display name */
-  updateName(ws, msg, m){
-    for(let i of m.rooms){
-      for(let j of i.players){
-        if(ws === j.ws){
-          j.name = msg.data.name;
-        }
-      }
-    }
-  },
-  
+
   /* When a client wants to create a new room */
   createRoom(ws, msg, m){
     var createRoomId = uuid.v4();
@@ -26,7 +15,7 @@ const wsMsg = {
     var initialPlayer = createPlayer(playerId, msg.data.player.name, newRoom, ws);
     newRoom.players.push(initialPlayer);
     m.rooms.push(newRoom);
-    
+
     var createRoomResponse = {
       id: createRoomId,
       name: msg.data.room.name,
@@ -37,7 +26,7 @@ const wsMsg = {
     //Client needs the list of all the players in the room, which is just them
     helpers.allPlayersUpdate(ws, newRoom.players);
   },
-  
+
   /* If message from client isn't a JSON string */
   errorInvalidJSON(ws){
     var response = {
@@ -49,7 +38,7 @@ const wsMsg = {
     response = JSON.stringify(response);
     ws.send(response);
   },
-  
+
   /* Invalid name in JSON message from client */
   errorInvalidName(ws, msg){
     var response = {
@@ -61,7 +50,7 @@ const wsMsg = {
     response = JSON.stringify(response);
     ws.send(response);
   },
-  
+
   /* When a client needs the room list */
   getRooms(ws, msg, m){
     var response = {
@@ -69,36 +58,36 @@ const wsMsg = {
       data: {
         rooms: []
       }
+    };
+    //Can't send the rooms array directly, it contains ws objects
+    // and other info the client doesn't need/shouldn't get
+    for(var i of m.rooms){
+      response.data.rooms.push({
+        id: i.id,
+        name: i.name,
+        roomStatus: i.roomStatus
+      });
     }
-  //Can't send the rooms array directly, it contains ws objects
-  // and other info the client doesn't need/shouldn't get
-  for(var i of m.rooms){
-    response.data.rooms.push({
-      id: i.id,
-      name: i.name,
-      roomStatus: i.roomStatus
-    });
-  }
-  response = JSON.stringify(response);
-  ws.send(response);
+    response = JSON.stringify(response);
+    ws.send(response);
   },
-  
+
   /* When a client wants to join a room */
   joinRoom(ws, msg, m){
-    var response
+    var response;
     var playerId = uuid.v4();
 
     //Find the room they want to join
     for(let i of m.rooms){
       if (i.id === msg.data.id){
-        //Once we find the room, add the player 
+        //Once we find the room, add the player
         // with their WebSocket connection (ws) to the room
         var newPlayer = createPlayer(playerId, msg.data.name, i, ws);
         i.players.push(newPlayer);
-        
+
         //Let the client know they joined the room successfully
         helpers.updateRoom(ws, i);
-        
+
         //Build the object to let the other clients know a new player joined
         response = {
           name: 'playersUpdate',
@@ -110,7 +99,7 @@ const wsMsg = {
               status: 'ready'
             }
           }
-        }
+        };
         response = JSON.stringify(response);
         for(let j of i.players){
           //Send to all clients except the newly joined one,
@@ -120,11 +109,16 @@ const wsMsg = {
           }
         }
         //Send complete list to newly joined client
-        helpers.allPlayersUpdate(ws, i.players)
+        helpers.allPlayersUpdate(ws, i.players);
       }
     }
   },
-  
+
+  /* Keep alive */
+  ka(){
+    return;
+  }
+
   /* When a client wants to start a new round */
   newRound(ws, msg, m){
     for(let i of m.rooms){
@@ -137,7 +131,7 @@ const wsMsg = {
       }
     }
   },
-  
+
   /* When a client locks in their score*/
   scoreChange(ws, msg, m){
     //Find room the client is in
@@ -176,6 +170,17 @@ const wsMsg = {
         //That way no one can know the scores until all players are locked in
         for(let j of i.players){
           helpers.playerStatusUpdate(j.ws, msg.data.status, id);
+        }
+      }
+    }
+  },
+
+  /* When a client wants to change their display name */
+  updateName(ws, msg, m){
+    for(let i of m.rooms){
+      for(let j of i.players){
+        if(ws === j.ws){
+          j.name = msg.data.name;
         }
       }
     }
