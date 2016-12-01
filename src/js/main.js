@@ -15,11 +15,11 @@ const dialogs = {
   Create: require('./dialogs/Create.vue'),
   Join: require('./dialogs/Join.vue'),
   UpdateName: require('./dialogs/UpdateName.vue')
-}
+};
 const pages = {
   Intro: require('./pages/Intro.vue'),
   Round: require('./pages/Round.vue')
-}
+};
 // Component registration
 for(let dialog in dialogs){
   Vue.component(dialog);
@@ -103,7 +103,7 @@ var app = new Vue({
   ws.onopen = function(e){
     app.ws = ws;
     ka = setInterval(keepAlive, 15000, ws);
-  }
+  };
   ws.onmessage = function(e){
     var msg = JSON.parse(e.data);
     wsBus.$emit(msg.name, msg.data);
@@ -112,10 +112,10 @@ var app = new Vue({
     //TODO: Reset timer when messages are sent, not just received
     clearInterval(ka);
     ka = setInterval(keepAlive, 15000, ws);
-  }
+  };
   ws.onclose = function(e){
     app.ws = 0;
-  }
+  };
 
 
 })(app);
