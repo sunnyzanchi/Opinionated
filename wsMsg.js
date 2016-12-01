@@ -117,7 +117,7 @@ const wsMsg = {
   /* Keep alive */
   ka(){
     return;
-  }
+  },
 
   /* When a client wants to start a new round */
   newRound(ws, msg, m){
