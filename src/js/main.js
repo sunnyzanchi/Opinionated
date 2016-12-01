@@ -84,7 +84,10 @@ var app = new Vue({
 // This handles setting up the app's WebSocket connection
 // TODO: Retry connection if the connection drops
 (function initws(app){
-  var ws = new WebSocket(`ws://${window.location.host}`);
+  if(window.location.protocol === 'http:')
+    var ws = new WebSocket(`ws://${window.location.host}`);
+  if(window.location.protocol === 'https:')
+    var ws = new WebSocket(`wss://${window.location.host}`);
 
   ws.onopen = function(e){
     app.ws = ws;
