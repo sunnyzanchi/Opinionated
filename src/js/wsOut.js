@@ -64,10 +64,10 @@ module.exports = {
   /* When the plaer wants to update their name */
   updateName(ws, name){
     var msg = {
-      name: "updateName",
+      name: 'updateName',
       data: {name}
     };
     msg = JSON.stringify(msg);
     ws.send(msg);
   }
-}
+};
