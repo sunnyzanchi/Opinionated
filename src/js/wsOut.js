@@ -38,6 +38,14 @@ module.exports = {
     ws.send(msg);
   },
 
+  /* Pings at 15 second intervals to keep connection alive */
+  keepAlive(ws){
+    var msg = {
+      name: 'ka'
+    };
+    msg = JSON.stringify(msg);
+    ws.send(msg);
+  },
   /* When the player wants to start a new round */
   newRound(ws, id){
     var msg = {
