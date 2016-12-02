@@ -1,9 +1,8 @@
-/* Opinionated 2.0.0 */
+/* Opinionated 2.1.0 */
 /* Eric Zanchi       */
 /* ################# */
 
 const Vue = require('vue');
-
 // The Websocket Bus emits events when a WS message is received
 // Components that need the information have listeners for each event
 // It needs to be a property on the window object instead of a var
@@ -82,43 +81,7 @@ var app = new Vue({
 });
 
 // This handles setting up the app's WebSocket connection
-// TODO: Retry connection if the connection drops
-(function initws(app){
-  //Keep Alive
-  var ka;
-  //Pings at 15 second intervals to keep the WS connection alive
-  function keepAlive(ws){
-    var msg = {
-      name: 'ka'
-    };
-    msg = JSON.stringify(msg);
-    ws.send(msg);
-  }
-
-  if(window.location.protocol === 'http:')
-    var ws = new WebSocket(`ws://${window.location.host}`);
-  if(window.location.protocol === 'https:')
-    var ws = new WebSocket(`wss://${window.location.host}`);
-
-  ws.onopen = function(e){
-    app.ws = ws;
-    ka = setInterval(keepAlive, 15000, ws);
-  };
-  ws.onmessage = function(e){
-    var msg = JSON.parse(e.data);
-    wsBus.$emit(msg.name, msg.data);
-
-    //Reset keep alive timer
-    //TODO: Reset timer when messages are sent, not just received
-    clearInterval(ka);
-    ka = setInterval(keepAlive, 15000, ws);
-  };
-  ws.onclose = function(e){
-    app.ws = 0;
-  };
-
-
-})(app);
+require('./initws.js')(app);
 
 // This forces Roboto 300 to load as soon as the page loads
 // Otherwise, it would wait to download it until some DOM with Roboto font was rendered
