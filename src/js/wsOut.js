@@ -46,6 +46,7 @@ module.exports = {
     msg = JSON.stringify(msg);
     ws.send(msg);
   },
+  
   /* When the player wants to start a new round */
   newRound(ws, id){
     var msg = {
