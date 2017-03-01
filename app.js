@@ -3,7 +3,6 @@ const favicon = require('serve-favicon');
 const express = require('express');
 const path = require('path');
 const app = express();
-const WebSocketServer = require('ws').Server;
 const expressWs = require('express-ws')(app);
 
 /*  Handles incoming Websocket messages

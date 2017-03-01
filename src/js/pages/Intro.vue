@@ -12,17 +12,13 @@
 </template>
 <!-- ### -->
 <script>
-const change = require('../mixins/change.js');
+import change from 'Mixins/change';
 
-module.exports = {
-  components: {},
-  computed: {},
+export default {
   data(){
     return {}
   },
-  methods: {},
   mixins: [change],
-  mounted(){},
   props: ['ws']
 }
 </script>

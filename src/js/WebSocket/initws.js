@@ -1,9 +1,10 @@
 // TODO: Retry connection if the connection drops
 
-const wsOut = require('./wsOut.js');
+import wsBus from 'WebSocket/wsBus';
+import wsOut from 'WebSocket/wsOut';
 
 var retry;
-module.exports = function initws(app){
+export default function initws(app){
  // Keep Alive
   var ka;
 

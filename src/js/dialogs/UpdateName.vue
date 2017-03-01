@@ -21,11 +21,10 @@
 </template>
 <!-- ### -->
 <script>
-const change = require('../mixins/change.js');
-const wsOut = require('../wsOut.js');
-module.exports = {
-  components: {},
-  computed: {},
+import change from 'Mixins/change';
+import wsOut from 'WebSocket/wsOut';
+
+export default {
   data () {
     return {
       newName: ''
@@ -38,7 +37,6 @@ module.exports = {
     }
   },
   mixins: [change],
-  mounted () {},
   props: ['ws']
 }
 </script>

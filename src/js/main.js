@@ -1,23 +1,26 @@
-/* Opinionated 2.1.0 */
-/* Eric Zanchi       */
-/* ################# */
+import Vue from 'vue';
+import wsBus from 'WebSocket/wsBus';
 
-const Vue = require('vue');
-// The Websocket Bus emits events when a WS message is received
-// Components that need the information have listeners for each event
-// It needs to be a property on the window object instead of a var
-//  because the components can't see it otherwise
-window.wsBus = new Vue();
+import fontLoad from './fontLoad';
+fontLoad();
 
 // Component loading and put in objects so they can be called by string name later
+import Create from 'Dialogs/Create.vue';
+import Join from 'Dialogs/Join.vue';
+import UpdateName from 'Dialogs/UpdateName.vue';
+
 const dialogs = {
-  Create: require('./dialogs/Create.vue'),
-  Join: require('./dialogs/Join.vue'),
-  UpdateName: require('./dialogs/UpdateName.vue')
+  Create,
+  Join,
+  UpdateName
 };
+
+import Intro from 'Pages/Intro.vue';
+import Round from 'Pages/Round.vue';
+
 const pages = {
-  Intro: require('./pages/Intro.vue'),
-  Round: require('./pages/Round.vue')
+  Intro,
+  Round
 };
 // Component registration
 for(let dialog in dialogs){
@@ -28,7 +31,6 @@ for(let page in pages){
 }
 
 /* Main app instance */
-/* ################# */
 var app = new Vue({
   el: '#app',
   created(){
@@ -81,21 +83,5 @@ var app = new Vue({
 });
 
 // This handles setting up the app's WebSocket connection
-require('./initws.js')(app);
-
-// This forces Roboto 300 to load as soon as the page loads
-// Otherwise, it would wait to download it until some DOM with Roboto font was rendered
-// This can cause it to jitter or even not show the text under slow network conditions
-(function fontForceLoad(){
-  var roboto = new FontFace('Roboto', 'url(https://fonts.gstatic.com/s/roboto/v15/Hgo13k-tfSpn0qi1SFdUfVtXRa8TVwTICgirnJhmVJw.woff2)', {});
-  var icons = new FontFace('Material Icons', 'url(https://fonts.gstatic.com/s/materialicons/v19/2fcrYFNaTjcS6g4U3t-Y5ZjZjT5FdEJ140U2DJYC3mY.woff2)', {});
-
-  roboto.load().then(function(){
-    document.fonts.add(roboto);
-  });
-
-  icons.load().then(function(){
-    documents.fonts.add(icons);
-  });
-
-}());
+import initWs from 'WebSocket/initws';
+initWs(app);

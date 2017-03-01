@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   methods: {
     changeDialog(dialogName){
       this.$emit('changedialog', dialogName);

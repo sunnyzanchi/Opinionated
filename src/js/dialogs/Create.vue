@@ -29,31 +29,27 @@
 </template>
 <!-- ### -->
 <script>
-const Vue = require('vue');
-const change = require('../mixins/change.js');
-const playerName = require('../mixins/playername.js');
-const wsOut = require('../wsOut.js');
+import change from 'Mixins/change';
+import playerName from 'Mixins/playername';
+import wsOut from 'WebSocket/wsOut';
 
-module.exports = {
-  components: {},
-  computed: {},
+export default {
   created(){
     var self = this;
 
+    //TODO: Change this into a directive
     // Set focus to the input
     // We have to do this inside a nextTick function,
     //  because the input is conditionally rendered, which is done asynchronously
-    Vue.nextTick(function(){
+    this.$nextTick(function(){
       // We use self because this is bound to the Vue object inside the function
       self.$refs.roomInput.focus();
     });
   },
-  data () {
+  data(){
     return {
       roomName: ''
     };
-  },
-  destroyed(){
   },
   methods: {
     createRoom(){
@@ -66,7 +62,6 @@ module.exports = {
     }
   },
   mixins: [change, playerName],
-  mounted () {},
   props: ['ws']
 }
 </script>

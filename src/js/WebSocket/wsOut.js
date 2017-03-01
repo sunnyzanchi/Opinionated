@@ -1,6 +1,6 @@
 //TODO: Make sure the ws connection is open before trying to send something
 
-module.exports = {
+export default {
 
   /* When the player wants to create a new room */
   createRoom(ws, {roomName, playerName}){
@@ -46,7 +46,7 @@ module.exports = {
     msg = JSON.stringify(msg);
     ws.send(msg);
   },
-  
+
   /* When the player wants to start a new round */
   newRound(ws, id){
     var msg = {
@@ -79,4 +79,4 @@ module.exports = {
     msg = JSON.stringify(msg);
     ws.send(msg);
   }
-};
+}

@@ -56,11 +56,12 @@
 </template>
 <!-- ### -->
 <script>
-const change = require('../mixins/change.js');
-const NumberButton = require('../components/NumberButton.vue');
-const wsOut = require('../wsOut.js');
+import change from 'Mixins/change';
+import NumberButton from 'Components/NumberButton.vue';
+import wsBus from 'WebSocket/wsBus';
+import wsOut from 'WebSocket/wsOut';
 
-module.exports = {
+export default {
   components: {
     NumberButton
   },
@@ -187,7 +188,7 @@ module.exports = {
       }
     });
   },
-  data () {
+  data(){
     return {
       // The scores available for the user to select
       availableScores: [1, 2, 3, 5, 8, 13, 20, 40, 100],
@@ -227,7 +228,6 @@ module.exports = {
     }
   },
   mixins: [change],
-  mounted () {},
   props: ['ws', 'room']
 }
 </script>

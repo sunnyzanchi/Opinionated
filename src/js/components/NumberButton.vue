@@ -11,7 +11,7 @@
 </template>
 <!-- ### -->
 <script>
-module.exports = {
+export default {
   components: {},
   computed: {
 

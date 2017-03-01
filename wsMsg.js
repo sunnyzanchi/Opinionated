@@ -1,5 +1,5 @@
 'use strict';
-const uuid = require('node-uuid');
+const uuid = require('uuid');
 const createRoom = require('./roomFactory');
 const createPlayer = require('./playerFactory');
 const helpers = require('./helpers');

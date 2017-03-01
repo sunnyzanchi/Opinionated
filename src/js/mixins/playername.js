@@ -1,6 +1,6 @@
 //TODO: Create an actual prompt, don't use prompt
 
-module.exports = {
+export default {
   computed: {
     /* Get the player's name from localStorage. If it's not there, prompt them for it and add it */
     playerName(){

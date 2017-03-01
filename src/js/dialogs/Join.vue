@@ -1,5 +1,4 @@
 <style lang="css">
-
 </style>
 <!-- ### -->
 <template lang="html">
@@ -30,11 +29,12 @@
 </template>
 <!-- ### -->
 <script>
-const change = require('../mixins/change.js');
-const playerName = require('../mixins/playername.js');
-const wsOut = require('../wsOut.js');
+import change from 'Mixins/change';
+import playerName from 'Mixins/playername';
+import wsBus from 'WebSocket/wsBus';
+import wsOut from 'WebSocket/wsOut';
 
-module.exports = {
+export default {
   components: {},
   computed: {},
   created(){
@@ -47,7 +47,7 @@ module.exports = {
       self.rooms = msg.rooms;
     });
   },
-  data () {
+  data(){
     return {
       rooms: []
     }
@@ -61,7 +61,6 @@ module.exports = {
     }
   },
   mixins: [change, playerName],
-  mounted () {},
   props: ['ws']
 }
 </script>
