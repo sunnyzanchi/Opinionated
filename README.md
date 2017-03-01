@@ -7,7 +7,7 @@ Clients can create rooms that other clients can join. Data is sent between the s
 
 Build and Run
 -------------
-1. Run `npm i`
+1. Run `yarn`
 2. Run `gulp`
 
 gulp runs webpack to build the bundle and starts nodemon, which runs the server and will restart on changes.
