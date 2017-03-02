@@ -1,4 +1,3 @@
-'use strict';
 const helpers = require('./helpers');
 
 function createRoom(id, name){

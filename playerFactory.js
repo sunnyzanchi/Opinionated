@@ -1,4 +1,3 @@
-'use strict';
 function createPlayer(id, name, room, ws){
   return {
     _name: name,

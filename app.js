@@ -1,4 +1,3 @@
-'use strict';
 const favicon = require('serve-favicon');
 const express = require('express');
 const path = require('path');

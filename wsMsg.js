@@ -1,4 +1,3 @@
-'use strict';
 const uuid = require('uuid');
 const createRoom = require('./roomFactory');
 const createPlayer = require('./playerFactory');

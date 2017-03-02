@@ -1,4 +1,3 @@
-'use strict';
 const helpers = {
   /* Send complete list of players */
   allPlayersUpdate(ws, players){
