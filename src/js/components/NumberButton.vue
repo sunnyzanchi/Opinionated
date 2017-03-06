@@ -2,29 +2,31 @@
 </style>
 <!-- ### -->
 <template lang="html">
-  <button class="number" :disabled="status === 'disabled'"
+  <button class="number" :disabled="status === 'disabled' || disabled"
           @click="select">
-    <i class="material-icons" v-if="status === 'primed'">lock_open</i>
     <i class="material-icons" v-if="status === 'submitted'">lock_outline</i>
     <template v-if="status === 'available' || status === 'disabled'">{{score}}</template>
   </button>
 </template>
 <!-- ### -->
 <script>
-export default {
-  components: {},
-  computed: {
+import {SET_SCORE} from 'Store/mutations';
 
-  },
+export default {
   data(){
-    return {}
+    return {
+      status: 'available'
+    }
   },
   methods: {
     select(){
-      this.$emit('select', this.score);
+      this.status = 'submitted';
+      this.$store.commit(SET_SCORE, this.score);
     }
   },
-  mounted(){},
-  props: ['score', 'status']
+  props: {
+    disabled: Boolean,
+    score: Number
+  }
 }
 </script>

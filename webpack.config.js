@@ -14,6 +14,8 @@ var config = {
         Dialogs: path.join(__dirname, 'src/js/Dialogs'),
         Mixins: path.join(__dirname, 'src/js/Mixins'),
         Pages: path.join(__dirname, 'src/js/Pages'),
+        Store: path.join(__dirname, 'src/js/Store'),
+        Stream: path.join(__dirname, 'src/js/Stream'),
         WebSocket: path.join(__dirname, 'src/js/WebSocket')
       }
     },

@@ -8,9 +8,9 @@
   <div class="round-container">
     <nav>
       <ul>
-        <li><h1>{{room.roomName}}</h1></li>
+        <li><h1>{{$route.params.roomName}}</h1></li>
         <li>
-          <button @click="changeDialog('UpdateName')">
+          <button @click="$router.push('settings')">
             <i class="material-icons">settings</i>
           </button>
         </li>
@@ -32,74 +32,44 @@
           </tbody>
         </table>
         <p class="stats"
-           v-show="room.roomStatus === 'over'">Average: {{averageScore}}
+           v-show="roomStatus === 'over'">Average: {{averageScore}}
         </p>
         <button class="new-round"
                 @click="newRound"
-                v-show="room.roomStatus === 'over'">New Round
+                v-show="roomStatus === 'over'">New Round
         </button>
       </div>
-      <div class="numbers-container">
-        <p class="hint"
-           :class="{'lock-hint': firstClicked}"
-           @webkitAnimationEnd=""
-           @animationend=""
-           @oAnimationEnd="">Tap your choice again to lock it in!
-        </p>
-        <number-button v-for="score in scores"
-                       @select="selectScoreReceiver"
-                       :score="score.score"
-                       :status="score.status"></number-button>
-      </div>
+      <ButtonGroup :scores="availableScores" />
     </div>
   </div>
 </template>
 <!-- ### -->
 <script>
-import change from 'Mixins/change';
-import NumberButton from 'Components/NumberButton.vue';
-import wsBus from 'WebSocket/wsBus';
-import wsOut from 'WebSocket/wsOut';
+import ButtonGroup from 'Components/ButtonGroup.vue';
+import {
+  SET_ROOMID,
+  SET_ROOMNAME,
+  SET_ROOMSTATUS
+} from 'Store/mutations';
+import {
+  allPlayersUpdate,
+  allScores,
+  nameUpdate,
+  playerStatusUpdate,
+  playerQuit,
+  playersUpdate,
+  roundUpdate,
+  updateRoom
+} from 'WebSocket/streams';
+import playerName from 'Mixins/playerName';
+import ws from 'WebSocket';
+import * as wsOut from 'WebSocket/wsOut';
 
 export default {
   components: {
-    NumberButton
+    ButtonGroup
   },
   computed: {
-    /* Generates text to be shown at the top of the screen for the round status */
-    roomStatusText(){
-      switch(this.room.roomStatus){
-        case "ready": return "Ready";
-        case "inProgress": return "In Progress";
-        case "over": return "Round Over";
-      }
-    },
-
-    /* Generates the array for the number buttons from availableScores and the selected score */
-    scores(){
-      var scores = [];
-      var statusToAdd = 'available';
-      if(this.selectedScore.status === 'submitted'){
-        statusToAdd = 'disabled';
-      }
-
-      for(let i = 0; i < this.availableScores.length; i++){
-        if(this.availableScores[i] === this.selectedScore.score){
-          scores[i] = {
-            status: this.selectedScore.status,
-            score: this.selectedScore.score
-          }
-        }
-        else{
-          scores[i] = {
-            score: this.availableScores[i],
-            status: statusToAdd
-          }
-        }
-      }
-      return scores;
-    },
-
     /* Generates the average score and coalesces to the nearest number in the available scores */
     averageScore(){
       var scoresTotal = 0;
@@ -122,24 +92,49 @@ export default {
         }
       }
       return closest;
+    },
+
+    isLocked(){
+      return this.selectedScore.status === 'locked';
+    },
+
+    /* Generates text to be shown at the top of the screen for the round status */
+    roomStatusText(){
+      switch(this.roomStatus){
+        case "ready": return "Ready";
+        case "inProgress": return "In Progress";
+        case "over": return "Round Over";
+      }
+    },
+    roomId(){
+      return this.$store.roomId;
+    },
+    roomName(){
+      return this.$store.roomName;
+    },
+    roomStatus(){
+      return this.$store.roomStatus;
     }
   },
-  //TODO: Encapsulate the event handler registration and deletion
   created(){
     // We have to use use self because this is a different context inside the event handler functions
-    var self = this;
+    const self = this;
+    this.$store.commit(SET_ROOMNAME, this.$route.params.roomName);
 
-    /* Received when first joining a room, and on room creation */
-    wsBus.$on('allPlayersUpdate', function(msg){
-      self.players = msg.players;
+    wsOut.createRoom(ws, {
+      roomName: this.roomName,
+      playerName: this.playerName
     });
 
+    /* Received when first joining a room, and on room creation */
+    allPlayersUpdate.subscribe(({data}) => this.players = data.players);
+
     /* Received when the round is over */
-    wsBus.$on('allScores', function(msg){
-      for(let i = 0; i < msg.scores.length; i++){
+    allScores.subscribe(function({data}){
+      for(let i = 0; i < data.scores.length; i++){
         for(let j = 0; j < self.players.length; j++){
-          if(self.players[j].id === msg.scores[i].id){
-            self.players[j].score = msg.scores[i].score;
+          if(self.players[j].id === data.scores[i].id){
+            self.players[j].score = data.scores[i].score;
             self.players[j].status = 'over';
           }
         }
@@ -147,45 +142,57 @@ export default {
     });
 
     /* Received when a player changes their name */
-    wsBus.$on('nameUpdate', function(msg){
+    nameUpdate.subscribe(function({data}){
       for(let i = 0; i < self.players.length; i++){
-        if(self.players[i].id === msg.id) self.players[i].name = msg.name;
+        if(self.players[i].id === data.id) self.players[i].name = msg.name;
       }
     });
 
     /* Received when the player or a different player primes or locks in their score */
-    wsBus.$on('playerStatusUpdate', function(msg){
+    playerStatusUpdate.subscribe(function({data}){
       for(let i = 0; i < self.players.length; i++){
-        if(self.players[i].id === msg.id){
-          self.players[i].status = msg.status;
+        if(self.players[i].id === data.id){
+          self.players[i].status = data.status;
         }
       }
     });
 
     /* Received when a player leaves the room */
-    wsBus.$on('playerQuit', function(msg){
+    playerQuit.subscribe(function({data}){
       for(let i = 0; i < self.players.length; i++){
-        if(self.players[i].id === msg.id){
+        if(self.players[i].id === data.id){
           self.players.splice(i, 1);
         }
       }
     })
 
     /* Received when a new player joins the room */
-    wsBus.$on('playersUpdate', function(msg){
-      self.players.push(msg.player);
+    playersUpdate.subscribe(function({data}){
+      self.players.push(data.player);
     })
 
     /* Received when the round status updates */
-    wsBus.$on('roundUpdate', function(msg){
-      if(msg.status === 'ready'){
+    roundUpdate.subscribe(function({data}){
+      self.roomStatus = data.status;
+      if(data.status === 'ready'){
         for(let i = 0; i < self.players.length; i++){
-          self.players[i].status = '';
+          self.players[i].status = null;
           self.players[i].score = null;
         }
-        self.selectedScore.status = '';
-        self.selectedScore.score = '';
+        self.selectedScore.status = null;
+        self.selectedScore.score = null;
+
+        for(let child of self.$children){
+          child.reset();
+        }
       }
+    });
+
+    updateRoom.subscribe(function({data}){
+      // Set room properties to new room
+      self.$store.commit(SET_ROOMID, data.room.id);
+      self.$store.commit(SET_ROOMNAME, data.room.name);
+      self.$store.commit(SET_ROOMSTATUS, data.room.status);
     });
   },
   data(){
@@ -196,38 +203,27 @@ export default {
       firstClicked: false,
       // List of all the players in the room
       players: [],
-      // The user's currently selected score and its status (primed or locked)
-      selectedScore: {status: '', score: null},
+      // The user's currently selected score
+      selectedScore: {score: null, status: 'available'}
     }
-  },
-  destroyed(){
-    wsBus.$off('allPlayersUpdate');
-    wsBus.$off('allScores');
-    wsBus.$off('nameUpdate');
-    wsBus.$off('playerStatusUpdate');
-    wsBus.$off('playerQuit');
-    wsBus.$off('playersUpdate');
-    wsBus.$off('roundUpdate');
   },
   methods: {
     /* This sends the message to start a new round */
     newRound(){
-      wsOut.newRound(this.ws, this.room.roomId);
+      wsOut.newRound(ws, this.roomId);
     },
 
-    /* This sets the selectedScore and status accordingly when a player chooses a score */
-    selectScoreReceiver(score){
+    /* This sets the selectedScore when a player chooses a score */
+    selectScoreReceiver({score, status}){
       if(!this.firstClicked)this.firstClicked = true;
-      if(this.selectedScore.score === score){
-        if(this.selectedScore.status === 'primed') this.selectedScore.status = 'submitted';
-        else if(this.selectedScore.status !== 'submitted') this.selectedScore.status = 'primed';
+
+      if(this.selectedScore !== score){
+        this.resetChildren();
       }
-      else this.selectedScore.status = 'primed';
-      this.selectedScore.score = score;
-      wsOut.scoreChange(this.ws, {score, status: this.selectedScore.status});
+      this.selectedScore = {score, status};
+      wsOut.scoreChange(ws, {score, status});
     }
   },
-  mixins: [change],
-  props: ['ws', 'room']
+  mixins: [playerName]
 }
 </script>

@@ -2,66 +2,65 @@
 </style>
 <!-- ### -->
 <template lang="html">
-  <div class="modal-container">
-    <div class="modal">
-      <!-- If the WS connection is set up -->
-      <template v-if="ws">
-        <h2>Create New Room</h2>
-        <div class="modal-content">
-          <label for="create">Room Name</label>
-          <input type="text"
-                 id="create"
-                 ref="roomInput"
-                 @keyup.enter="createRoom"
-                 v-model="roomName">
-        </div>
-        <div class="button-inliner">
-          <button @click="closeDialog">Cancel</button>
-          <button @click="createRoom">Create</button>
-        </div>
-      </template>
-      <!-- If the WS connection is not set up -->
-      <template v-else>
-        <h2>Could Not Connect</h2>
-      </template>
-    </div>
-  </div>
+  <dialog-box>
+    <!-- If the WS connection is set up -->
+    <template v-if="isWsActive">
+      <h2>Create New Room</h2>
+      <div class="modal-content">
+        <label for="create">Room Name</label>
+        <input type="text"
+               id="create"
+               @keyup.enter="createRoom"
+               v-model="roomName"
+               v-focus>
+      </div>
+      <div class="button-inliner">
+        <button @click="$router.go(-1)">Cancel</button>
+        <button @click="createRoom">Create</button>
+      </div>
+    </template>
+    <!-- If the WS connection is not set up -->
+    <template v-else>
+      <h2>Could Not Connect</h2>
+    </template>
+  </dialog-box>
 </template>
 <!-- ### -->
 <script>
-import change from 'Mixins/change';
+import {updateRoom} from 'WebSocket/streams';
+import DialogBox from 'Components/DialogBox.vue';
 import playerName from 'Mixins/playername';
-import wsOut from 'WebSocket/wsOut';
+import ws from 'WebSocket';
 
 export default {
-  created(){
-    var self = this;
-
-    //TODO: Change this into a directive
-    // Set focus to the input
-    // We have to do this inside a nextTick function,
-    //  because the input is conditionally rendered, which is done asynchronously
-    this.$nextTick(function(){
-      // We use self because this is bound to the Vue object inside the function
-      self.$refs.roomInput.focus();
-    });
+  computed: {
+    isWsActive(){
+      return true;
+    }
+  },
+  components: {
+    DialogBox
   },
   data(){
     return {
       roomName: ''
     };
   },
-  methods: {
-    createRoom(){
-      wsOut.createRoom(this.ws, {
-        roomName: this.roomName,
-        playerName: this.playerName
-      });
-      this.changePage('Round');
-      this.closeDialog();
+  directives: {
+    focus: {
+      inserted(el){
+        el.focus();
+      }
     }
   },
-  mixins: [change, playerName],
-  props: ['ws']
+  methods: {
+    createRoom(){
+      this.$router.push({
+        name: 'room',
+        params: {roomName: this.roomName}
+      });
+    }
+  },
+  mixins: [playerName]
 }
 </script>

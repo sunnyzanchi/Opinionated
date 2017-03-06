@@ -15,21 +15,9 @@
   <body>
     <div id="app">
     <noscript>This app requires JavaScript to run</noscript>
-      <!-- Dialog box -->
-      <transition name="dialog-fade" mode="out-in">
-        <component :is="dialog"
-                   :ws="ws"
-                   @changedialog="changeDialogReceiver"
-                   @changepage="changePageReciever"></component>
-      </transition>
-      <!-- Current page -->
       <!-- TODO: Make the page transition better -->
       <transition name="dialog-fade" mode="in-out">
-        <component :is="page"
-                   :ws="ws"
-                   :room="room"
-                   @changedialog="changeDialogReceiver"
-                   @changepage="changePageReciever"></component>
+        <router-view></router-view>
       </transition>
     </div>
     <script src="/js/bundle.js"></script>

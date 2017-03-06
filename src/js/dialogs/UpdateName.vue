@@ -21,8 +21,8 @@
 </template>
 <!-- ### -->
 <script>
-import change from 'Mixins/change';
-import wsOut from 'WebSocket/wsOut';
+import ws from 'WebSocket';
+import {updateName} from 'WebSocket/wsOut';
 
 export default {
   data () {
@@ -32,11 +32,9 @@ export default {
   },
   methods: {
     updateName(){
-      wsOut.updateName(this.ws, this.newName);
+      updateName(ws, this.newName);
       this.closeDialog();
     }
-  },
-  mixins: [change],
-  props: ['ws']
+  }
 }
 </script>
