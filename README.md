@@ -1,5 +1,7 @@
 Opinionated
 ===========
+https://zanchi-opinionated.herokuapp.com/  
+*It's hosted on Heroku's free tier so it takes a second to load*  
 
 Opinionated is a simple Web app to share data between users. I created it for our team to give difficulty scores to items in our sprint planning meetings.
 
